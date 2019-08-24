@@ -1,2 +1,21 @@
-dfghjklñ{
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://konfio.mx/css/mvc/design-system.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Konfio</title>
+</head>
+<body>
+    <h1 class="h1-big">dfghj</h1>
+    <script>
+        function getData(userID){
+            fetch(`datasets/${userID}.json`).then(data=>data.json()).then(data=>{
+                console.log(data)
+            })
+        }
+        getData('PST1205156S0')
+    </script>
+</body>
+</html>

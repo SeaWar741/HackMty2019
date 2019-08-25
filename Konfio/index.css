@@ -1,0 +1,12 @@
+body{
+    padding: 16px
+}
+
+.flex_cont{
+    padding: 8px;
+    display: flex;
+}
+
+.sales_count{
+    background: #00DCB8
+}

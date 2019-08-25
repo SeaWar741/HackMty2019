@@ -2,20 +2,161 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="https://konfio.mx/css/mvc/design-system.css">
+    <link rel="stylesheet" href="index.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Konfio</title>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-database.js"></script>
+
 </head>
 <body>
-    <h1 class="h1-big">dfghj</h1>
+    <h1 class="h1-big">Tu negocio</h1>
+
+    <h2 class="h2">Tus ventas del periodo</h2>
+    <h1 class="sales h1"></h1>
+    <div class="flex_cont sales_cont">
+        <div class="card-shadow sales_count">
+            <h3 class="h3">q</h3>
+            <span>Numero de clientes en el periodo</span>
+        </div>
+        <div class="card-shadow sales_max">
+            <h3 class="h3">q</h3>
+            <span>Tu factura mas grande por venta</span>
+            <hr>
+            <h4 class="h4">q</h4>
+        </div>
+        <div class="card-shadow sales_maxClient">
+            <h3 class="h3">q</h3>
+            <span>Tu factura mas grande por venta</span>
+            <hr>
+            <h4 class="h4">q</h4>
+        </div>
+    </div>
+
+    <h2 class="h2">Resumen de gastos</h2>
+    <h1 class="expenses h1"></h1>
+    <div class="flex_cont expenses_cont">
+        <div class="card-shadow expenses_count">
+            <h3 class="h3">q</h3>
+            <span>Numero de proveedores en el periodo</span>
+        </div>
+
+        <div class="card-shadow sales_maxClient">
+                <h3 class="h3">q</h3>
+                <span>Tu gasto mas grande por venta</span>
+                <hr>
+                <h4 class="h4">q</h4>
+            </div>
+    </div>
+
+
+
+
     <script>
-        function getData(userID){
-            fetch(`datasets/${userID}.json`).then(data=>data.json()).then(data=>{
-                console.log(data)
+
+        firebase.initializeApp({
+            apiKey: "AIzaSyCs9-07jyUUBzLfjLvM_0CaGHv-fseAQ6c",
+            authDomain: "hackmty-8c2c2.firebaseapp.com",
+            databaseURL: "https://hackmty-8c2c2.firebaseio.com",
+            projectId: "hackmty-8c2c2",
+            storageBucket: "hackmty-8c2c2.appspot.com",
+            messagingSenderId: "339012306355",
+            appId: "1:339012306355:web:cfc084202840d28f"
+        })
+
+
+        function convertToNumber(num){
+            if(typeof num == "number"){
+                return num
+            } else if (typeof num == "string") {
+                return Number(num.replace(',','.'))
+            }
+        }
+        let sales;
+        function getData(userID, callback){
+            firebase.database().ref(userID).once('value').then(snapshot=>{
+
+
+                sales = [...snapshot.val().filter(i=>i.emisorrfc != userID)]
+                let sales_total = sales.reduce(function(a,b){
+                    return({total: convertToNumber(a.total) + convertToNumber(b.total)})
+                }).total.toLocaleString()
+
+                let salesMax = [...sales.sort((a,b)=> b.total - a.total )][0]
+
+                let obj_salesClient = {}
+                sales.forEach(i=>{ 
+                    if(obj_salesClient[i.emisorname] == undefined){
+                        obj_salesClient[i.emisorname] = {
+                            emisorname: i.emisorname,
+                            total: convertToNumber(i.total),
+                            subtotal: convertToNumber(i.subtotal),
+                            cost: convertToNumber(i.cost)
+                        }
+                    } else {
+                        obj_salesClient[i.emisorname].total+=convertToNumber(i.total)
+                        obj_salesClient[i.emisorname].subtotal+=convertToNumber(i.subtotal)
+                        obj_salesClient[i.emisorname].cost+=convertToNumber(i.cost)
+                    }
+                 })
+                
+                let salesMaxClient = obj_salesClient[
+                    Object.keys(obj_salesClient).sort((a,b) => obj_salesClient[b].total - obj_salesClient[a].total)[0]
+                ]
+            
+                document.querySelector('.sales').innerHTML = `$${sales_total}`;
+                document.querySelector('.sales_count>h3').innerHTML = Object.keys(obj_salesClient).length;
+                document.querySelector('.sales_count>h3').innerHTML = Object.keys(obj_salesClient).length;
+                document.querySelector('.sales_max>h3').innerHTML = `$${salesMax.total.toLocaleString()}`;
+                document.querySelector('.sales_max>h4').innerHTML = salesMax.emisorname;
+                document.querySelector('.sales_maxClient>h3').innerHTML = `$${salesMaxClient.total.toLocaleString()}`;
+                document.querySelector('.sales_maxClient>h4').innerHTML = salesMaxClient.emisorname != '' ? salesMaxClient.emisorname : salesMaxClient.emisorrfc ;
+
+                let expenses = [...snapshot.val().filter(i=>i.emisorrfc==userID)]
+                let expenses_total = expenses.reduce(function(a,b){
+                    return({total: convertToNumber(a.total) + convertToNumber(b.total)})
+                }).total.toLocaleString()
+
+                console.log(expenses_total)
+
+                let obj_expensesSuppliers = {}
+                expenses.forEach(i=>{ 
+                    if(obj_expensesSuppliers[i.receptorname] == undefined){
+                        obj_expensesSuppliers[i.receptorname] = {
+                            receptorname: i.receptorname,
+                            total: convertToNumber(i.total),
+                            subtotal: convertToNumber(i.subtotal),
+                            cost: convertToNumber(i.cost)
+                        }
+                    } else {
+                        obj_expensesSuppliers[i.receptorname].total+=convertToNumber(i.total)
+                        obj_expensesSuppliers[i.receptorname].subtotal+=convertToNumber(i.subtotal)
+                        obj_expensesSuppliers[i.receptorname].cost+=convertToNumber(i.cost)
+                    }
+                })
+                
+                document.querySelector('.expenses').innerHTML = `$${expenses_total}`;
+                document.querySelector('.expenses_count>h3').innerHTML = Object.keys(obj_expensesSuppliers).length;
+
+                /*let salesMaxClient = obj_salesClient[
+                    Object.keys(obj_salesClient).sort((a,b) => obj_salesClient[b].total - obj_salesClient[a].total)[0]
+                ]*/
+
+
+                console.log(expenses)
+
+
+                //console.log(snapshot.val())
+                callback( snapshot.val() )
             })
         }
-        getData('PST1205156S0')
+        getData('TAF100112H1A', function(data){
+            console.log(data)
+        })
     </script>
 </body>
 </html>

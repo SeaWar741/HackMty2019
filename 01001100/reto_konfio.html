@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <script src="https://ctrl-alt-tec.github.io/altUI/altUI.js?v=3"></script>
+        <link href="https://ctrl-alt-tec.github.io/altUI/altUI.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://konfio.mx/css/mvc/design-system.css">
+    <link rel="stylesheet" href="Style/reto_konfio.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="MobileOptimized" content="width">
+    <link rel="apple-touch-icon" sizes="180x180" href="Images/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="Images/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="Images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon-57x57.png">
+    <link rel="shortcut icon" href="Images/favicon.ico" type="image/x-icon" />
+    <title>Konfio</title>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-database.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css" integrity="sha256-IvM9nJf/b5l2RoebiFno92E5ONttVyaEEsdemDC6iQA=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js" integrity="sha256-arMsf+3JJK2LoTGqxfnuJPFTU4hAK57MtIPdFpiHXOU=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    <section class="section_balance">
+        <div class="card balance">
+            <h1 class="h1-big"></h1>
+        </div>
+    </section>
+
+    <section class="section_income">
+        <h2 class="h2">Tus ventas del periodo</h2>
+        <h1 class="sales h1"></h1>
+        <div class="flex_cont sales_cont">
+            <div class="card-shadow sales_count">
+                <h3 class="h3">q</h3>
+                <span>Numero de clientes en el periodo</span>
+            </div>
+            <div class="card-shadow sales_max">
+                <h3 class="h3">q</h3>
+                <span>Tu factura mas grande por venta</span>
+                <hr>
+                <h4 class="h4">q</h4>
+            </div>
+            <div class="card-shadow sales_maxClient">
+                <h3 class="h3">q</h3>
+                <span>Tu factura mas grande por cliente</span>
+                <hr>
+                <h4 class="h4">q</h4>
+            </div>
+        </div>
+        <h2 class="h2">Histórico</h2>
+        <canvas class="timeSales"></canvas>
+
+        <h2 class="h2">Ventas destacadas</h2>
+
+    </section>
+
+    <section class="section_expenses">
+        <h2 class="h2">Resumen de gastos</h2>
+        <h1 class="expenses h1"></h1>
+        <div class="flex_cont expenses_cont">
+            <div class="card-shadow expenses_count">
+                <h3 class="h3">q</h3>
+                <span>Numero de proveedores en el periodo</span>
+            </div>
+            <div class="card-shadow expenses_max">
+                <h3 class="h3">q</h3>
+                <span>Tu gasto mas grande por venta</span>
+                <hr>
+                <h4 class="h4">q</h4>
+            </div>
+        </div>
+        <h2 class="h2">Impuestos</h2>
+        <div class="card-shadow expenses_taxes">
+            <h3 class="h3">q</h3>
+            <span>Total de impuestos</span>
+        </div>
+        <h2 class="h2">Histórico</h2>
+        <canvas class="timeCosts"></canvas>
+        <h2 class="h2">Gastos destacados</h2>
+    </section>
+    <section class="section_growth">
+        <h2 class="h2">Crecimiento</h2>
+        <canvas class="timeTransactions"></canvas>
+        <canvas class="timeProfit"></canvas>
+    </section>
+    <section class="section_products">
+        <h2 class="h2">Productos</h2>
+        <div class="flex_cont products_cont">
+            <div class="card-shadow product_count">
+                <h3 class="h3">q</h3>
+                <span>Numero de productos</span>
+            </div>
+            <div class="card-shadow product_max">
+                <h3 class="h3">q</h3>
+                <span>Producto mas rentable</span>
+                <hr>
+                <h4 class="h4">q</h4>
+            </div>
+        </div>
+
+    </section>
+    <section class="section_banks">
+        <h2 class="h2">Bancos</h2>
+        <div class="flex_cont banks_cont">
+            <div class="card-shadow bank_count">
+                <h3 class="h3">q</h3>
+                <span>Numero de transacciones con bancos</span>
+            </div>
+        </div>
+        <h2 class="h2">Tasas de interés</h2>
+
+
+    </section>
+
+
+    <script>
+
+
+        let cont_masterDetailView = document.createElement('div');
+        cont_masterDetailView.style.width="100%";
+        cont_masterDetailView.style.height='100%'
+        let UIAppBar = new UI.AppBar('','').setBackground('#7264C9').setColor('white');
+
+
+        let UIStackNavigator = new UI.StackNavigator(cont_masterDetailView, UIAppBar)
+
+
+        let userID = new URL(window.location.href).searchParams.get("user");
+
+        let UIMasterDetailView = new UI.MasterDetailView([], {stackNavigator: UIStackNavigator});
+
+        let UIModal = new UI.Modal();
+
+        document.body.prepend(UIMasterDetailView.dom)
+        document.body.prepend(UIAppBar.dom)
+        document.body.append(UIModal.dom)
+
+
+
+
+
+
+        firebase.initializeApp({
+            apiKey: "AIzaSyCs9-07jyUUBzLfjLvM_0CaGHv-fseAQ6c",
+            authDomain: "hackmty-8c2c2.firebaseapp.com",
+            databaseURL: "https://hackmty-8c2c2.firebaseio.com",
+            projectId: "hackmty-8c2c2",
+            storageBucket: "hackmty-8c2c2.appspot.com",
+            messagingSenderId: "339012306355",
+            appId: "1:339012306355:web:cfc084202840d28f"
+        })
+
+
+        function convertToNumber(num){
+            if(typeof num == "number"){
+                return num
+            } else if (typeof num == "string") {
+                return Number(num.replace(',','.'))
+            }
+        }
+        function getData(userID, callback){
+            firebase.database().ref(userID).once('value').then(snapshot=>{
+
+                UIAppBar.setTitle(`Mi negocio: ${userID}`)
+
+                let sales = [...snapshot.val().filter(i=>i.emisorrfc != userID)]
+                let sales_total = sales.reduce(function(a,b){
+                    return({total: convertToNumber(a.total) + convertToNumber(b.total)})
+                }).total
+                let salesMax = [...sales.sort((a,b)=> b.total - a.total )]
+                let obj_salesClient = {}
+                sales.forEach(i=>{
+                    if(obj_salesClient[i.emisorname] == undefined){
+                        obj_salesClient[i.emisorname] = {
+                            emisorname: i.emisorname,
+                            total: convertToNumber(i.total),
+                            subtotal: convertToNumber(i.subtotal),
+                            cost: convertToNumber(i.cost)
+                        }
+                    } else {
+                        obj_salesClient[i.emisorname].total+=convertToNumber(i.total)
+                        obj_salesClient[i.emisorname].subtotal+=convertToNumber(i.subtotal)
+                        obj_salesClient[i.emisorname].cost+=convertToNumber(i.cost)
+                    }
+                })
+                let salesMaxClient = obj_salesClient[
+                    Object.keys(obj_salesClient).sort((a,b) => obj_salesClient[b].total - obj_salesClient[a].total)[0]
+                ]
+                document.querySelector('.sales').innerHTML = `$${sales_total.toLocaleString()}`;
+                document.querySelector('.sales_count>h3').innerHTML = Object.keys(obj_salesClient).length;
+                document.querySelector('.sales_max>h3').innerHTML = `$${salesMax[0].total.toLocaleString()}`;
+                document.querySelector('.sales_max>h4').innerHTML = salesMax[0].emisorname;
+                document.querySelector('.sales_maxClient>h3').innerHTML = `$${salesMaxClient.total.toLocaleString()}`;
+                document.querySelector('.sales_maxClient>h4').innerHTML = salesMaxClient.emisorname != '' ? salesMaxClient.emisorname : salesMaxClient.emisorrfc ;
+
+                salesMax.slice(0,6).forEach((l,i)=>{
+                    document.querySelector('.section_income').append( new UI.ListViewItemMaster(
+                        function(){
+                            let date = document.createElement('span')
+                            date.innerText = l.date
+                            return date
+                        }(), l.emisorname, l.emisorrfc,
+                        function(){
+                            let total = document.createElement('span')
+                            total.innerText = `$${l.total}`
+                            return total
+                        }(),
+                        {leftIcon: false}
+                        ).dom)
+                })
+
+                let expenses = [...snapshot.val().filter(i=>i.emisorrfc==userID)]
+                let expenses_total = expenses.reduce(function(a,b){
+                    return({total: convertToNumber(a.total) + convertToNumber(b.total)})
+                }).total
+
+                let expensesMax = [...expenses.sort((a,b)=> b.cost - a.cost )][0]
+
+                console.log(expenses_total)
+
+                let obj_expensesSuppliers = {}
+                expenses.forEach(i=>{
+                    if(obj_expensesSuppliers[i.receptorname] == undefined){
+                        obj_expensesSuppliers[i.receptorname] = {
+                            receptorname: i.receptorname,
+                            total: convertToNumber(i.total),
+                            subtotal: convertToNumber(i.subtotal),
+                            cost: convertToNumber(i.cost)
+                        }
+                    } else {
+                        obj_expensesSuppliers[i.receptorname].total+=convertToNumber(i.total)
+                        obj_expensesSuppliers[i.receptorname].subtotal+=convertToNumber(i.subtotal)
+                        obj_expensesSuppliers[i.receptorname].cost+=convertToNumber(i.cost)
+                    }
+                })
+                let expensesMaxSupplier = obj_expensesSuppliers[
+                    Object.keys(obj_expensesSuppliers).sort((a,b) => obj_expensesSuppliers[b].total - obj_expensesSuppliers[a].total)[0]
+                ]
+
+                document.querySelector('.expenses').innerHTML = `$${expenses_total.toLocaleString()}`;
+                document.querySelector('.expenses_count>h3').innerHTML = Object.keys(obj_expensesSuppliers).length;
+                document.querySelector('.expenses_max>h3').innerHTML = `$${expensesMax.total.toLocaleString()}`;
+                document.querySelector('.expenses_max>h4').innerHTML = expensesMax.receptorname != '' ? expensesMax.receptorname : expensesMax.receptorrfc;
+
+                document.querySelector('.expenses_taxes>h3').innerHTML = `$${Number(sales_total - sales.reduce(function(a,b){
+                    return({subtotal: convertToNumber(a.subtotal) + convertToNumber(b.subtotal)})
+                }).subtotal).toLocaleString()}`
+
+                salesMax.slice(0,6).forEach((l,i)=>{
+                    document.querySelector('.section_expenses').append( new UI.ListViewItemMaster(
+                        function(){
+                            let date = document.createElement('span')
+                            date.innerText = l.date
+                            return date
+                        }(), l.emisorname, l.emisorrfc,
+                        function(){
+                            let total = document.createElement('span')
+                            total.innerText = `$${l.total}`
+                            return total
+                        }(),
+                        {leftIcon: false}
+                        ).dom)
+                })
+
+                document.querySelector('.balance>h1').innerHTML = '$'+Number(sales_total-expenses_total).toLocaleString()+'MXN';
+
+
+                let timeSales = {}
+                snapshot.val().map(i=>{
+                    if( timeSales[new Date(i.date).getTime()/1000] == undefined ){
+                        timeSales[new Date(i.date).getTime()/1000] = convertToNumber(i.total)
+                    } else {
+                        timeSales[new Date(i.date).getTime()/1000] += convertToNumber(i.total)
+                    }
+                })
+                new Chart( document.querySelector('.timeSales'), {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(timeSales).map(i=>new Date(i*1000).toLocaleDateString()),
+                        datasets: [{
+                            label: 'Ingresos',
+                            data: Object.keys(timeSales).map(i=>timeSales[i])
+                        }]
+                    }
+                } )
+
+                let timeTransactions = {}
+                snapshot.val().map(i=>{
+                    if( timeTransactions[new Date(i.date).getTime()/1000] == undefined ){
+                        timeTransactions[new Date(i.date).getTime()/1000] = 1
+                    } else {
+                        timeTransactions[new Date(i.date).getTime()/1000] ++
+                    }
+                })
+                new Chart( document.querySelector('.timeTransactions'), {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(timeTransactions).map(i=>new Date(i*1000).toLocaleDateString()),
+                        datasets: [{
+                            label: 'Transacciones',
+                            data: Object.keys(timeTransactions).map(i=>timeTransactions[i]),
+                            backgroundColor: '#526474',
+                        }]
+                    }
+                } )
+
+                let timeCosts = {}
+                let obj_products = {}
+                let sales_total_q = 0
+                snapshot.val().map(i=>{
+                    if( timeCosts[new Date(i.date).getTime()/1000] == undefined ){
+                        timeCosts[new Date(i.date).getTime()/1000] = 1
+                    } else {
+                        timeCosts[new Date(i.date).getTime()/1000] ++
+                    }
+                    if(obj_products[i.productid] == undefined){
+                        obj_products[i.productid] = {
+                            id: i.productid,
+                            cost: convertToNumber(i.cost),
+                            price: convertToNumber(i.quantity) != 0 ? convertToNumber(i.total)/convertToNumber(i.quantity) : convertToNumber(i.total),
+                            quantity: convertToNumber(i.quantity)
+                        }
+                    } else {
+                        obj_products[i.productid].quantity += convertToNumber(i.quantity);
+                    }
+                    sales_total_q+=convertToNumber(i.quantity)
+                })
+                //console.log(obj_products)
+                new Chart( document.querySelector('.timeCosts'), {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(timeCosts).map(i=>new Date(i*1000).toLocaleDateString()),
+                        datasets: [{
+                            label: 'Transacciones',
+                            data: Object.keys(timeCosts).map(i=>timeCosts[i]),
+                            backgroundColor: '#526474',
+                        }]
+                    }
+                } )
+
+
+                let product_chart = document.createElement('canvas')
+                new Chart(product_chart, {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: Object.keys(obj_products).map(i=>obj_products[i].quantity),
+                            backgroundColor: '#526474',
+                        }],
+                        labels: Object.keys(obj_products)
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                })
+                document.querySelector('.section_products').append(product_chart)
+
+                Object.keys(obj_products).sort((a,b)=>obj_products[b].quantity - obj_products[a].quantity).forEach((l,i)=>{
+                    console.log(obj_products[l])
+                    document.querySelector('.section_products').append( new UI.ListViewItemMaster(
+                        function(){
+                            let price = document.createElement('span')
+                            price.innerText = `$${obj_products[l].price.toLocaleString()}`
+                            return price
+                        }(), l, `(Costo: $${ obj_products[l].cost })`,
+                        function(){
+                            let quantity = document.createElement('span')
+                            quantity.innerText = obj_products[l].quantity
+                            return quantity
+                        }(),
+                        {leftIcon: false}
+                        ).onClick(()=>{
+                            UIModal.show(function(){
+                                let container = document.createElement('div');
+                                container.style.display='flex';
+                                container.style.flexWrap='wrap';
+                                container.style.justifyContent='center';
+                                container.append( new UI.Heading(2, 'Detalles de producto '+l).dom )
+
+                                let chart = document.createElement('canvas')
+                                new Chart(chart, {
+                                    type: 'pie',
+                                    data: {
+                                        datasets: [{
+                                            data: [obj_products[l].quantity, sales_total_q-obj_products[l].quantity],
+                                            backgroundColor: '#526474',
+                                        }]
+                                    }
+                                })
+                                chart.style.float = 'left'
+                                container.append(chart)
+
+                                container.append( new UI.CellViewItemKeyValue('Precio', '$'+obj_products[l].price.toLocaleString()).dom )
+                                container.append( new UI.CellViewItemKeyValue('Porcentaje de volumen', Math.round(obj_products[l].quantity*100/sales_total_q,2)+'%').dom )
+                                container.append( new UI.CellViewItemKeyValue('Porcentaje de ingresos', Math.round(obj_products[l].price*100/sales_total, 2 )+'%').dom )
+
+
+                                return container
+                            }(), l)
+                        }).dom)
+                })
+
+                let product_max = obj_products[Object.keys(obj_products).sort((a,b)=> obj_products[b].cost/obj_products[b].total - obj_products[a].cost/obj_products[a].total )[0]]
+
+                document.querySelector('.product_count>h3').innerHTML = Object.keys(obj_products).length
+                document.querySelector('.product_max>h3').innerHTML = product_max.id
+                document.querySelector('.product_max>h4').innerHTML = `${product_max.quantity} unidades`
+
+
+
+                let banks = [...sales.filter(i=> i.emisorname.includes('BANCO') || i.emisorname.includes('BBV') ) || i.emisorname.includes('HSBC') || i.emisorname.includes('UNION')]
+                let obj_banks = {}
+                let banks_count = 0;
+                banks.forEach(function(l,i){
+                    if(obj_banks[l.emisorname] == undefined){
+                        obj_banks[l.emisorname] = {
+                            name: l.emisorname,
+                            total: convertToNumber(l.total),
+                            subtotal: convertToNumber(l.subtotal)
+                        }
+                    } else {
+                        obj_banks[l.emisorname].total+=convertToNumber(l.total)
+                        obj_banks[l.emisorname].subtotal+=convertToNumber(l.subtotal)
+                    }
+                    banks_count++
+                })
+                Object.keys(obj_banks).forEach(function(l,i){
+                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)+'%').dom )
+                })
+                document.querySelector('.bank_count>h3').innerHTML = banks_count
+
+
+                let section_income = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Ingresos', '', null).dom,
+                    sectionName: 'Ingresos' ,
+                    sectionContent: document.querySelector('.section_income'),
+                }
+                UIMasterDetailView.addSection(section_income)
+                let section_expenses = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Gastos', '', null).dom,
+                    sectionName: 'Gastos' ,
+                    sectionContent: document.querySelector('.section_expenses'),
+                }
+                UIMasterDetailView.addSection(section_expenses)
+                let section_growth = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Crecimiento', '', null).dom,
+                    sectionName: 'Crecimiento' ,
+                    sectionContent: document.querySelector('.section_growth'),
+                }
+                UIMasterDetailView.addSection(section_growth)
+                let section_products = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Productos', '', null).dom,
+                    sectionName: 'Productos' ,
+                    sectionContent: document.querySelector('.section_products'),
+                }
+                UIMasterDetailView.addSection(section_products)
+                let section_banks = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Bancos', '', null).dom,
+                    sectionName: 'Bancos' ,
+                    sectionContent: document.querySelector('.section_banks'),
+                }
+                UIMasterDetailView.addSection(section_banks)
+                callback( snapshot.val() )
+            })
+        }
+        getData(userID, function(data){
+            console.log(data)
+        })
+    </script>
+</body>
+</html>

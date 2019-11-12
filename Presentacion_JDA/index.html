@@ -5,6 +5,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="For over 30 years, JDA has been the leading provider of end-to-end, integrated retail and supply chain planning and execution solutions.">
+  <meta name="theme-color" content="#00a9e0">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#00a9e0">
+  <link rel="apple-touch-icon" sizes="57x57" href=",/img/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="./img/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="./img/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="./img/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="./img/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./img/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="./img/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./img/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./img/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="./img/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="./img/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
   <title>Machine Learning Regression Algorithm For Sales Prediction</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
@@ -80,6 +101,102 @@
       </div>
     </div>
   </div>
+  <div class="container">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <div style="padding-top:5rem;padding-bottom:2rem;">
+              <h2 class="font-weight-bold">How it works</h2>
+            </div>
+          </div>
+          <p>
+          <h3>The machine learning model utilizes the libraries
+          pandas, numpy and sklearn to find a correlation between
+          the given data.</h3>
+          <br>
+          <h4 class="font-weight-bold">Steps</h4>
+          <h5>
+            <a class="font-weight-bold">1)</a> The algorithm checks for the elements that lack data
+            then it proccedes with imputation using mean values.
+          </h5>
+          <br>
+          <h5>
+            <a class="font-weight-bold">2)</a> The algorithm changes the event values to binary in order to
+            change the column to categorical data.
+          </h5>
+          <br>
+          <h5>
+            <a class="font-weight-bold">3)</a> The algorithm changes the location to a weight by replacing it
+            to the categorical mean.
+          </h5>
+          <br>
+          <h5>
+            <a class="font-weight-bold">4)</a> The date is replaced to the day of the week due to the correlation
+            with beer consumption.accent-1.
+          </h5>
+          <br>
+          <h5>
+            <a class="font-weight-bold">5)</a> The dataset is converted into a matrix.
+          </h5>
+          <br>
+          <h5>
+            <a class="font-weight-bold">6)</a> A linear multivariable regression is applied on the matrix
+            with location,product,date,temp_mean,sunshine,event and price.
+          </h5>
+          <br>
+          <h5>
+            <a class="font-weight-bold">7)</a> The prediction values are stored and append to the dataset.
+          </h5>
+          <br>
+          <h5>
+            <a class="font-weight-bold">8)</a> The dataset is converted into a csv.
+          </h5>
+          </p>
+          <div class="container align-content-center" style="padding-top:5rem">
+            <a href="https://github.com/SeaWar741/HackMty2019">
+              <button type="button" class="btn btn-danger" style="margin-left:auto;margin-right:auto;display:block">
+                <h3 class="font-weight-bold">Download Code</h3>
+              </button>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="container vh-100">
+            <a data-toggle="modal" data-target="#myModal">
+              <img src="./img/code.png" class="img-fluid" alt="Responsive image" style="padding-top:5rem">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+      <h1 class="font-weight-bold" style="padding-left:5rem;padding-top:1rem;">Code Source</h1>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>        
+        <!-- 16:9 aspect ratio -->
+        <div class="embed-responsive embed-responsive-16by9 z-depth-1">
+          <iframe
+            src="https://carbon.now.sh/embed/?bg=rgba(255%2C255%2C255%2C1)&t=seti&wt=none&l=python&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=true&fl=1&fm=Hack&fs=14.5px&lh=133%25&si=false&es=4x&wm=false&code=import%2520pandas%2520as%2520pd%250Aimport%2520numpy%2520as%2520np%250Aimport%2520math%250Aimport%2520time%250Afrom%2520sklearn%2520import%2520linear_model%250A%250Alocations%2520%253D%2520%255B%255D%250Adf%2520%253D%2520pd.read_csv(%2522input_data_train.csv%2522)%250A%250A%2523------fill%2520missing%2520values%2520of%2520price------%250Amedian_price%2520%253D%2520math.floor(df.price.median())%250Aprint(median_price)%250Aprint(df)%250Adf.price%2520%253D%2520df.price.fillna(median_price)%250Aprint(df)%250A%250A%2523------replace%2520events%2520with%2520binary%2520value------%250Adf.event%2520%253D%2520df.event.fillna(0)%250Aprint(df)%250Adf.loc%255Bdf%255B'event'%255D%2520!%253D%25200%252C'event'%255D%2520%253D%25201%250Aprint(%2522tabla%2520con%2520eventos%2520en%2520booleano%2522)%250Aprint(df)%250A%250A%2523------replace%2520location%2520with%2520weights------%250Aprices_mean_category%2520%253D%2520df.groupby('location').mean()%255B'price'%255D%250Aprint(prices_mean_category)%250A%250Acategory_weight%2520%253D%2520prices_mean_category.sort_values().round()%250Aprint(%2522Categor%25C3%25ADas%2520ordenadas%2520por%2520promedio%2520de%2520ventas%2522)%250Aprint(category_weight)%250Acategory_weight_d%2520%253D%2520category_weight.to_dict()%250Aprint(category_weight_d)%250Afor%2520element_category%2520in%2520category_weight_d%253A%250A%2520%2520%2520%2520df.loc%255Bdf%255B'location'%255D%2520%253D%253D%2520element_category%252C'location'%255D%2520%253D%2520category_weight_d.get(element_category)%250Aprint(%2522location%2520to%2520average%2520of%2520the%2520category%253A%2522)%250Aprint(df)%250A%250A%2523------replace%2520date%2520to%2520day%2520of%2520the%2520week------%250Adf%255B'date'%255D%2520%253D%2520pd.to_datetime(df%255B'date'%255D)%250Adf%255B'date'%255D%2520%253D%2520df%255B'date'%255D.dt.day_name()%250Adays%253D%257B%2522Monday%2522%253A1%252C%2522Tuesday%2522%253A2%252C%2522Wednesday%2522%253A3%252C%2522Thursday%2522%253A4%252C%2522Friday%2522%253A5%252C%2522Saturday%2522%253A6%252C%2522Sunday%2522%253A7%257D%250Aprint(%2522Fecha%2520cambiada%2520a%2520dia%2520de%2520la%2520semana%2520str%253A%2522)%250Aprint(df)%250A%2523%2523%2520changes%2520days%2520from%2520string%2520to%2520day%2520of%2520the%2520week%2520by%2520iterating%2520over%2520dictionary%250Afor%2520weekdaystr%2520in%2520days%253A%250A%2520%2520%2520%2520df.loc%255Bdf%255B'date'%255D%2520%253D%253D%2520weekdaystr%252C'date'%255D%2520%253D%2520days.get(weekdaystr)%250Aprint(%2522Fecha%2520cambiada%2520a%2520dia%2520de%2520la%2520semana%2520int%253A%2522)%250Aprint(df)%250A%250A%2523------%2520Modify%2520input%2520csv%2520------%250Aprint(%2522INICIANDO%2520PROCESO%2520CON%2520INPUT%2520DATA%2522)%250Adf2%2520%253D%2520pd.read_csv(%2522input_data_pred.csv%2522)%250Adf2o%2520%253D%2520pd.read_csv(%2522input_data_pred.csv%2522)%250A%2523------fill%2520missing%2520values%2520of%2520price------%250Amedian_price%2520%253D%2520math.floor(df2.price.median())%250Aprint(median_price)%250Aprint(df2)%250Adf2.price%2520%253D%2520df2.price.fillna(median_price)%250Aprint(df2)%250A%250A%2523------replace%2520events%2520with%2520binary%2520value------%250Adf2.event%2520%253D%2520df2.event.fillna(0)%250Aprint(df2)%250Adf2.loc%255Bdf2%255B'event'%255D%2520!%253D%25200%252C'event'%255D%2520%253D%25201%250Aprin"
+            style="transform:scale(0.7); width:100%; height:100%; border:0; overflow:hidden;"
+            sandbox="allow-scripts allow-same-origin">
+          </iframe>
+        </div>  
+      </div>
+    </div>
+  </div>
+</div> 
+  
+  
+  
+</div>
+
   <!-- Start your project here-->
   <!-- SCRIPTS -->
   <!-- JQuery -->
@@ -177,7 +294,7 @@
             borderColor: "rgba(0, 168, 224, 1)",
             pointBackgroundColor: "rgba(0, 168, 224, 1)",
             pointBorderColor: "rgba(255, 255, 255, 1)",
-            label: 'Predicted Sales($)',
+            label: 'Predicted Sales',
             data: datapoints
           }]
         },

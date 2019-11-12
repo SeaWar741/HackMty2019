@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Machine Learning Regression Algorithm For Sales Prediction</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="css/mdb.min.css" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="css/style.css" rel="stylesheet">
+  <style>
+    canvas {
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+	</style>
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark">
+    <a class="navbar-brand" href="#">
+      <img src="https://jda.com/-/media/jda/jda-logo-with-tagline-261x71.ashx?h=74&w=261&la=en&hash=D6CB9454E26CEC1BC266A3654E306F69533BA8F2" height="55" alt="JDA logo" style="margin-left:5rem;">
+      <ul class="navbar-nav ml-auto nav-flex-icons">
+      <li class="nav-item avatar">
+        <a class="nav-link p-0" href="https://github.com/SeaWar741/HackMty2019">
+          <button type="button" class="btn btn-primary" style="background-color: #32BAE6 !important"><i class="fab fa-github" aria-hidden="true"></i></button>
+        </a>
+      </li>
+    </ul>
+    </a>
+  </nav>
+  <!-- Start your project here-->
+  <div class="container align-content-center" style="padding-top:3rem;">
+    <div class="container" style="text-align: center;">
+      <h1 class="font-weight-bold master-title"><a>Machine Learning Regression Algorithm For Sales Prediction</a></h1>
+      <h4 style="padding-top:2rem;">Team: Eduardo Villalpando Mello, Juan Carlos Garfias Tovar & Luis Alberto Fernández</h4>
+    </div>
+    <div class="container" style="padding-top:2rem;">
+      <h2 class="font-weight-bold">Graph</h2>
+    </div>
+    <div class="container" style="padding-top:2rem;">
+      <div class="container align-content-center">
+		    <canvas id="data_chart" class="vertical-center"></canvas>
+	    </div>
+    </div>
+  </div>
+  <div class="container" >
+    <div class="container">
+      <div class="container" style="padding-top:5rem;">
+        <h2 class="font-weight-bold">Data</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="table" id="data_table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Location</th>
+              <th scope="col">Product</th>
+              <th scope="col">Date</th>
+              <th scope="col">Temp Mean</th>
+              <th scope="col">Temp Max</th>
+              <th scope="col">Temp Min</th>
+              <th scope="col">Sunshine Quantity</th>
+              <th scope="col">Event</th>
+              <th scope="col">Price ($)</th>
+              <th scope="col">Predicted Sales Quantity</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Start your project here-->
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <script type="text/javascript" src="js/moment.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
+  <!--Moment-->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+  <script>
+    //firebase
+    var firebaseConfig = {
+      apiKey: "AIzaSyC6RgeZBSi4ePN8Vipc1_3zX_Jh4AjGpSU",
+      authDomain: "jda-challenge2019.firebaseapp.com",
+      databaseURL: "https://jda-challenge2019.firebaseio.com",
+      projectId: "jda-challenge2019",
+      storageBucket: "jda-challenge2019.appspot.com",
+      messagingSenderId: "837123583031",
+      appId: "1:837123583031:web:188170aecf918a9e7fe3b2",
+      measurementId: "G-H03LBBH7TZ"
+    };
+    //store coordinates
+    var predictedsales=[];
+    var dates=[];
+    var datapoints =[];
+    var timeFormat = 'DD/MM/YYYY';
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+		var database = firebase.database();
+    database.ref().once('value', function(snapshot){
+        if(snapshot.exists()){
+            var content = '';
+            snapshot.forEach(function(data){
+                var val = data.val();
+                content +='<tr>';
+                content += '<td>' + val.id + '</td>';
+                content += '<td>' + val.location + '</td>';
+                content += '<td>' + val.product + '</td>';
+                content += '<td>' + val.date + '</td>';
+                //dates.push(val.date);
+                content += '<td>' + val.temp_mean + '</td>';
+                content += '<td>' + val.temp_max + '</td>';
+                content += '<td>' + val.temp_min + '</td>';
+                content += '<td>' + val.sunshine_quant + '</td>';
+                content += '<td>' + val.event + '</td>';
+                content += '<td>' + val.price + '</td>';
+                content += '<td>' + val.sa_quantity + '</td>';
+                //predictedsales.push(val.sa_quantity);
+                content += '</tr>';
+                var currentDate= val.date; //Extracting the date value in dd/mm/yyyy format from the mentioned text box
+				         //Printing the extracted date value before making the change
+				        var newDate = currentDate.split('/'); //Splitting the extracted date value using the delimiter /, which is the seperator used in the date value			
+				        currentDate = newDate[1] + "/" + newDate[0] + "/" + newDate[2];//Constructing a new date value (string) using the splitted values.
+                var dateObject = new Date(currentDate);
+                dates.push(currentDate);
+                console.log(dateObject);
+                var data_point={
+                  x:dateObject,
+                  y:parseFloat(val.sa_quantity)
+                };
+                datapoints.push(data_point);
+            });
+            $('#data_table').append(content);
+        }
+    });
+    console.log(dates);
+    console.log(predictedsales);
+    console.log(datapoints);
+    //Graph
+      //console.log(data.val());
+      var chartData = [];
+      var ctxR = document.getElementById("data_chart").getContext('2d');
+      var myChart = new Chart(ctxR, {
+        type: 'scatter',
+        data: {
+            label: 'Prediction',
+            datasets: [{
+            backgroundColor: "rgba(0, 168, 224, 0.45)",
+            borderColor: "rgba(0, 168, 224, 1)",
+            pointBackgroundColor: "rgba(0, 168, 224, 1)",
+            pointBorderColor: "rgba(255, 255, 255, 1)",
+            label: 'Predicted Sales($)',
+            data: datapoints
+          }]
+        },
+        responsive: true,
+            title:{
+                display: true,
+                text:"Chart.js Time Scale"
+            },
+            scales:{
+                xAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                  },
+                  type: 'time',
+                  time: {
+                    unit: 'day'
+                  }
+                }],
+                yAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Sales (units)'
+                  }
+                }]
+            }
+        });
+        myChart.update();
+    paginator({
+      table: document.getElementById("table-demo").getElementsByTagName("table")[0],
+      box: document.getElementById("box"),
+    });
+    setInterval(function() {
+      myChart.update();
+    },100);
+  </script>
+</body>
+
+</html>

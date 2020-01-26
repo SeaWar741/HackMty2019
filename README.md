@@ -1,9 +1,13 @@
-# **HackMty 2019**
+# **HackMty 2019 1st place JDA Challenge**
 Repository with the code for HackMty2019
+
 
 #### Solutions: 
 - JDA: Machine learning regression based model to predict future sales with scikit-learn
 - Konfio: Progressive web app to monitor financial elements of a business
+
+## **1st Place on JDA Challenge**  
+Website for JDA: https://seawar741.github.io/HackMty2019/Presentacion_JDA/
 
 
 ## **JDA**

@@ -171,32 +171,27 @@
       </div>
     </div>
   </div>
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-      <h1 class="font-weight-bold" style="padding-left:5rem;padding-top:1rem;">Source Code</h1>
-       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>        
-        <!-- 16:9 aspect ratio -->
-        <div class="embed-responsive embed-responsive-16by9 z-depth-1">
-          <iframe
-            src="https://carbon.now.sh/embed/?bg=rgba(255%2C255%2C255%2C1)&t=seti&wt=none&l=python&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=true&fl=1&fm=Hack&fs=14.5px&lh=133%25&si=false&es=4x&wm=false&code=import%2520pandas%2520as%2520pd%250Aimport%2520numpy%2520as%2520np%250Aimport%2520math%250Aimport%2520time%250Afrom%2520sklearn%2520import%2520linear_model%250A%250Alocations%2520%253D%2520%255B%255D%250Adf%2520%253D%2520pd.read_csv(%2522input_data_train.csv%2522)%250A%250A%2523------fill%2520missing%2520values%2520of%2520price------%250Amedian_price%2520%253D%2520math.floor(df.price.median())%250Aprint(median_price)%250Aprint(df)%250Adf.price%2520%253D%2520df.price.fillna(median_price)%250Aprint(df)%250A%250A%2523------replace%2520events%2520with%2520binary%2520value------%250Adf.event%2520%253D%2520df.event.fillna(0)%250Aprint(df)%250Adf.loc%255Bdf%255B'event'%255D%2520!%253D%25200%252C'event'%255D%2520%253D%25201%250Aprint(%2522tabla%2520con%2520eventos%2520en%2520booleano%2522)%250Aprint(df)%250A%250A%2523------replace%2520location%2520with%2520weights------%250Aprices_mean_category%2520%253D%2520df.groupby('location').mean()%255B'price'%255D%250Aprint(prices_mean_category)%250A%250Acategory_weight%2520%253D%2520prices_mean_category.sort_values().round()%250Aprint(%2522Categor%25C3%25ADas%2520ordenadas%2520por%2520promedio%2520de%2520ventas%2522)%250Aprint(category_weight)%250Acategory_weight_d%2520%253D%2520category_weight.to_dict()%250Aprint(category_weight_d)%250Afor%2520element_category%2520in%2520category_weight_d%253A%250A%2520%2520%2520%2520df.loc%255Bdf%255B'location'%255D%2520%253D%253D%2520element_category%252C'location'%255D%2520%253D%2520category_weight_d.get(element_category)%250Aprint(%2522location%2520to%2520average%2520of%2520the%2520category%253A%2522)%250Aprint(df)%250A%250A%2523------replace%2520date%2520to%2520day%2520of%2520the%2520week------%250Adf%255B'date'%255D%2520%253D%2520pd.to_datetime(df%255B'date'%255D)%250Adf%255B'date'%255D%2520%253D%2520df%255B'date'%255D.dt.day_name()%250Adays%253D%257B%2522Monday%2522%253A1%252C%2522Tuesday%2522%253A2%252C%2522Wednesday%2522%253A3%252C%2522Thursday%2522%253A4%252C%2522Friday%2522%253A5%252C%2522Saturday%2522%253A6%252C%2522Sunday%2522%253A7%257D%250Aprint(%2522Fecha%2520cambiada%2520a%2520dia%2520de%2520la%2520semana%2520str%253A%2522)%250Aprint(df)%250A%2523%2523%2520changes%2520days%2520from%2520string%2520to%2520day%2520of%2520the%2520week%2520by%2520iterating%2520over%2520dictionary%250Afor%2520weekdaystr%2520in%2520days%253A%250A%2520%2520%2520%2520df.loc%255Bdf%255B'date'%255D%2520%253D%253D%2520weekdaystr%252C'date'%255D%2520%253D%2520days.get(weekdaystr)%250Aprint(%2522Fecha%2520cambiada%2520a%2520dia%2520de%2520la%2520semana%2520int%253A%2522)%250Aprint(df)%250A%250A%2523------%2520Modify%2520input%2520csv%2520------%250Aprint(%2522INICIANDO%2520PROCESO%2520CON%2520INPUT%2520DATA%2522)%250Adf2%2520%253D%2520pd.read_csv(%2522input_data_pred.csv%2522)%250Adf2o%2520%253D%2520pd.read_csv(%2522input_data_pred.csv%2522)%250A%2523------fill%2520missing%2520values%2520of%2520price------%250Amedian_price%2520%253D%2520math.floor(df2.price.median())%250Aprint(median_price)%250Aprint(df2)%250Adf2.price%2520%253D%2520df2.price.fillna(median_price)%250Aprint(df2)%250A%250A%2523------replace%2520events%2520with%2520binary%2520value------%250Adf2.event%2520%253D%2520df2.event.fillna(0)%250Aprint(df2)%250Adf2.loc%255Bdf2%255B'event'%255D%2520!%253D%25200%252C'event'%255D%2520%253D%25201%250Aprin"
-            style="transform:scale(0.7); width:100%; height:100%; border:0; overflow:hidden;"
-            sandbox="allow-scripts allow-same-origin">
-          </iframe>
-        </div>  
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+        <h1 class="font-weight-bold" style="padding-left:5rem;padding-top:1rem;">Source Code</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>        
+          <!-- 16:9 aspect ratio -->
+          <div class="embed-responsive embed-responsive-16by9 z-depth-1">
+            <iframe
+              src="https://carbon.now.sh/embed/?bg=rgba(255%2C255%2C255%2C1)&t=seti&wt=none&l=python&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=56px&ph=56px&ln=true&fl=1&fm=Hack&fs=14.5px&lh=133%25&si=false&es=4x&wm=false&code=import%2520pandas%2520as%2520pd%250Aimport%2520numpy%2520as%2520np%250Aimport%2520math%250Aimport%2520time%250Afrom%2520sklearn%2520import%2520linear_model%250A%250Alocations%2520%253D%2520%255B%255D%250Adf%2520%253D%2520pd.read_csv(%2522input_data_train.csv%2522)%250A%250A%2523------fill%2520missing%2520values%2520of%2520price------%250Amedian_price%2520%253D%2520math.floor(df.price.median())%250Aprint(median_price)%250Aprint(df)%250Adf.price%2520%253D%2520df.price.fillna(median_price)%250Aprint(df)%250A%250A%2523------replace%2520events%2520with%2520binary%2520value------%250Adf.event%2520%253D%2520df.event.fillna(0)%250Aprint(df)%250Adf.loc%255Bdf%255B'event'%255D%2520!%253D%25200%252C'event'%255D%2520%253D%25201%250Aprint(%2522tabla%2520con%2520eventos%2520en%2520booleano%2522)%250Aprint(df)%250A%250A%2523------replace%2520location%2520with%2520weights------%250Aprices_mean_category%2520%253D%2520df.groupby('location').mean()%255B'price'%255D%250Aprint(prices_mean_category)%250A%250Acategory_weight%2520%253D%2520prices_mean_category.sort_values().round()%250Aprint(%2522Categor%25C3%25ADas%2520ordenadas%2520por%2520promedio%2520de%2520ventas%2522)%250Aprint(category_weight)%250Acategory_weight_d%2520%253D%2520category_weight.to_dict()%250Aprint(category_weight_d)%250Afor%2520element_category%2520in%2520category_weight_d%253A%250A%2520%2520%2520%2520df.loc%255Bdf%255B'location'%255D%2520%253D%253D%2520element_category%252C'location'%255D%2520%253D%2520category_weight_d.get(element_category)%250Aprint(%2522location%2520to%2520average%2520of%2520the%2520category%253A%2522)%250Aprint(df)%250A%250A%2523------replace%2520date%2520to%2520day%2520of%2520the%2520week------%250Adf%255B'date'%255D%2520%253D%2520pd.to_datetime(df%255B'date'%255D)%250Adf%255B'date'%255D%2520%253D%2520df%255B'date'%255D.dt.day_name()%250Adays%253D%257B%2522Monday%2522%253A1%252C%2522Tuesday%2522%253A2%252C%2522Wednesday%2522%253A3%252C%2522Thursday%2522%253A4%252C%2522Friday%2522%253A5%252C%2522Saturday%2522%253A6%252C%2522Sunday%2522%253A7%257D%250Aprint(%2522Fecha%2520cambiada%2520a%2520dia%2520de%2520la%2520semana%2520str%253A%2522)%250Aprint(df)%250A%2523%2523%2520changes%2520days%2520from%2520string%2520to%2520day%2520of%2520the%2520week%2520by%2520iterating%2520over%2520dictionary%250Afor%2520weekdaystr%2520in%2520days%253A%250A%2520%2520%2520%2520df.loc%255Bdf%255B'date'%255D%2520%253D%253D%2520weekdaystr%252C'date'%255D%2520%253D%2520days.get(weekdaystr)%250Aprint(%2522Fecha%2520cambiada%2520a%2520dia%2520de%2520la%2520semana%2520int%253A%2522)%250Aprint(df)%250A%250A%2523------%2520Modify%2520input%2520csv%2520------%250Aprint(%2522INICIANDO%2520PROCESO%2520CON%2520INPUT%2520DATA%2522)%250Adf2%2520%253D%2520pd.read_csv(%2522input_data_pred.csv%2522)%250Adf2o%2520%253D%2520pd.read_csv(%2522input_data_pred.csv%2522)%250A%2523------fill%2520missing%2520values%2520of%2520price------%250Amedian_price%2520%253D%2520math.floor(df2.price.median())%250Aprint(median_price)%250Aprint(df2)%250Adf2.price%2520%253D%2520df2.price.fillna(median_price)%250Aprint(df2)%250A%250A%2523------replace%2520events%2520with%2520binary%2520value------%250Adf2.event%2520%253D%2520df2.event.fillna(0)%250Aprint(df2)%250Adf2.loc%255Bdf2%255B'event'%255D%2520!%253D%25200%252C'event'%255D%2520%253D%25201%250Aprin"
+              style="transform:scale(0.7); width:100%; height:100%; border:0; overflow:hidden;"
+              sandbox="allow-scripts allow-same-origin">
+            </iframe>
+          </div>  
+        </div>
       </div>
     </div>
-  </div>
-</div> 
-  
-  
-  
-</div>
-
+  </div> 
   <!-- Start your project here-->
   <!-- SCRIPTS -->
   <!-- JQuery -->
@@ -207,17 +202,25 @@
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="js/mdb.min.js"></script>
-  <script type="text/javascript" src="js/moment.js"></script>
+  <!--Moment-->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+  <!--Chartjs-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
-  <!--Moment-->
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
   <!--Data Tables-->
   <script type="text/javascript" src="js/addons/datatables.min.js"></script>
   <script>
+    //date
+    function getTimeString(date) {
+      var day = date.getDate();
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+
+      return day + '/' + month + '/' + year;
+    }
     //firebase
     var firebaseConfig = {
       apiKey: "AIzaSyC6RgeZBSi4ePN8Vipc1_3zX_Jh4AjGpSU",
@@ -309,9 +312,15 @@
                     display: true,
                     labelString: 'Date'
                   },
-                  type: 'time',
-                  time: {
-                    unit: 'day'
+                  ticks: {
+                    callback: value => {
+                        let date = moment(value);
+                         if (date.diff(moment('1970-02-01 23:59:59'), 'minutes') === 0) {
+                            return null;
+                        }
+                        return date.format('DD/MM/YYYY');
+                    },
+                    stepSize: 3.6e+6
                   }
                 }],
                 yAxes: [{
